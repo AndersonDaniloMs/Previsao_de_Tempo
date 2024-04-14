@@ -2,11 +2,9 @@ const keyWeather = "5f03e26a0f8995b6d82a843283cdd101";
 
 
 const mostrarNaTela = (dados) => {
-  if (dados.name.charAt(dados.name.length - 1) === 'o') {
-    document.querySelector(".CidadeTempo").innerHTML = "Tempo no " + dados.name;
-  } else {
-    document.querySelector(".CidadeTempo").innerHTML = "Tempo em " + dados.name;
-  }
+
+  document.querySelector(".CidadeTempo").innerHTML = dados.name;
+
   //Pega apenas a parte inteira das temperaturas maximas e minimas
   let Max_Temp = Math.floor(dados.main.temp_max)
   let Min_Temp = Math.floor(dados.main.temp_min)
@@ -16,7 +14,7 @@ const mostrarNaTela = (dados) => {
   document.querySelector(".temperatura").innerHTML = (Max_Temp + Min_Temp) / 2 + "  ºC";
 
   // Atualiza o conteúdo do elemento com a classe ".Max" com a temperatura máxima
-  document.querySelector(".Max").innerHTML = "Máx:" + Max_Temp + "º";
+  document.querySelector(".Max").innerHTML = "Máx:" + Max_Temp + "º" + " | ";
   // Atualiza o conteúdo do elemento com a classe ".Max" com a temperatura minima
   document.querySelector(".Min").innerHTML = "Mín:" + Min_Temp + "º";
 
