@@ -1,61 +1,84 @@
 const keyWeather = "5f03e26a0f8995b6d82a843283cdd101";
 
-
+// Função para exibir os dados na tela
 const mostrarNaTela = (dados) => {
-
-  document.querySelector(".CidadeTempo").innerHTML = dados.name;
-
-  //Pega apenas a parte inteira das temperaturas maximas e minimas
-  let Max_Temp = Math.floor(dados.main.temp_max)
-  let Min_Temp = Math.floor(dados.main.temp_min)
-  console.log("Max:" + Max_Temp + "- Min:" + Min_Temp)
-
-  //Temperatura Media calculada Max+Min/2
-  document.querySelector(".temperatura").innerHTML = (Max_Temp + Min_Temp) / 2 + "  ºC";
-
-  // Atualiza o conteúdo do elemento com a classe ".Max" com a temperatura máxima
-  document.querySelector(".Max").innerHTML = "Máx:" + Max_Temp + "º" + " | ";
-  // Atualiza o conteúdo do elemento com a classe ".Max" com a temperatura minima
-  document.querySelector(".Min").innerHTML = "Mín:" + Min_Temp + "º";
-
-  //Buscar o clima pela API
-  document.querySelector(".clima").innerHTML = dados.weather[0].description
-
-  //Mudar o BACKGROUND DO BODY
-  const body = document.getElementById("Body")
-  if (dados.weather[0].description === "nublado" || dados.weather[0].description === "chuva leve") {
-    body.style.background = "linear-gradient(to top, #303336, #1c242e)"
-    body.style.transition = "all 0.2s Linear;"
-  }
-  else {
-    body.style.background = "linear-gradient(to top left, #132331, #3566a7)"
-    body.style.transition = "all 2s Linear;"
+  if (dados.cod === "404") {
+    document.querySelector(".CidadeTempo").innerHTML = "Cidade não encontrada. Por favor, verifique o nome e tente novamente.";
+    document.querySelector(".cards-previsao-diaria").innerHTML = ""; // Limpa o conteúdo atual
+    return;
   }
 
-  //Buscar o dados da Umidade da cidade pela API 
-  document.querySelector(".Umidade").innerHTML = "humidade: " + dados.main.humidity + "%"
-  //Pegar a imagem do clima
-  document.querySelector(".imagemTempo").src = `https://openweathermap.org/img/wn/${dados.weather[0].icon}.png`
-
-  //Timezone
-  let data = new Date();
-  let dia = data.getDate(); // Obtém o dia do mês (1-31)
-  let semana = data.getDay(); // Obtém o dia da semana (0-6)
-  let mes = data.getMonth()
-  let Meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dez"];
-  let diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
-  let nomeDiaSemana = diasSemana[semana];
-  let NomeMes = Meses[mes].toUpperCase();
-
-  document.querySelector(".DiaSemana").innerHTML = nomeDiaSemana;
-  document.querySelector(".diaMes").innerHTML = dia + " " + NomeMes;
-
+  if (dados.city.name.charAt(dados.city.name.length - 1) === 'o')
+    document.querySelector(".CidadeTempo").innerHTML = "Tempo no " + dados.city.name;
+  else
+    document.querySelector(".CidadeTempo").innerHTML = "Tempo em " + dados.city.name;
+  exibirPrevisaoSemana(dados);
 }
 
-//Função assincrona para buscar os dados do tempo de acordo a cidade digitada
-async function BuscarCidade(cidadeValue) {
+// Função para exibir a previsão do tempo para os próximos 5 dias
+const exibirPrevisaoSemana = (dados) => {
+  const diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
+  const cardsPrevisao = document.querySelector(".cards-previsao-diaria");
+  cardsPrevisao.innerHTML = ""; // Limpa o conteúdo atual
+
+  const hoje = new Date();
+  let diaAtual = hoje.getDay(); // Dia da semana (0-6)
+  const diaMesAtual = hoje.getDate(); // Dia do mês
+
+  // Exibir previsão para os próximos 5 dias
+  for (let i = 0; i < 5; i++) {
+    const dataPrevisao = new Date(hoje);
+    dataPrevisao.setDate(hoje.getDate() + i);
+    const diaSemana = diasSemana[dataPrevisao.getDay()];
+    const diaMes = `${dataPrevisao.getDate()}/${dataPrevisao.getMonth() < 9 ? "0" : ""}${dataPrevisao.getMonth() + 1}`;
+
+    // Encontrar a previsão para o dia atual na lista de previsões da API
+    const previsaoDia = dados.list.find((item) => {
+      const dataItem = new Date(item.dt_txt);
+      return dataItem.getDate() === dataPrevisao.getDate() && dataItem.getMonth() === dataPrevisao.getMonth();
+    });
+
+    if (previsaoDia) {
+      const clima = previsaoDia.weather[0].description;
+      const tempMedia = Math.floor(previsaoDia.main.temp);
+      const tempMax = Math.floor(previsaoDia.main.temp_max);
+      const tempMin = Math.floor(previsaoDia.main.temp_min);
+      const umidade = previsaoDia.main.humidity;
+      const vento = previsaoDia.wind.speed
+
+      const article = criarCardPrevisao(diaSemana, diaMes, clima, tempMedia, tempMax, tempMin, umidade, previsaoDia.weather[0].icon, vento);
+      cardsPrevisao.appendChild(article);
+    }
+
+    diaAtual = (diaAtual + 1) % 7; // Avança para o próximo dia da semana
+  }
+}
+
+// Função para criar um card de previsão do tempo
+const criarCardPrevisao = (diaSemana, diaMes, clima, tempMedia, tempMax, tempMin, umidade, icone, vento) => {
+  const article = document.createElement("article");
+  article.innerHTML = `
+    <h1 class="DiaSemana">${diaSemana}</h1>
+    <p class="diaMes">${diaMes}</p>
+    <img width="80px" class="imagemTempo" src="https://openweathermap.org/img/wn/${icone}.png" alt="Tempo" />
+    <h1 class="clima">${clima}</h1>
+    <h1 class="temperatura">${tempMedia}<sup>ºC</sup></h1>
+    <div class="temperaturaMax-Min">
+      <h1 class="Max">Máx:${tempMax}<sup>º</sup></h1>
+      <h1 class="Min">Mín:${tempMin}<sup>º</sup></h1>
+    </div>
+    <div class="WindHumidity">
+      <h1 class="Umidade"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABCUlEQVR4nOXWzyoFURzA8bGj8AyIV7BQl0JZWFl4IhsLZetGyk55h8tCV2xkIxt5APnXDSs+mrpF+TfzmzO35Ls6dRafZs75TZNlfykM4Aht9PcSXvfeWq/QBl4+wPl6pm50CFc+d4nBOuFV37dSFzqK5x/gfG+kDnjP7+2mRqfwqliNVGgfThTvOBW8qHwLKeDDANxOcbbRJqvAO2GWrSg6jKcK8GP+pYvAy6q3FIG3E8DlXzfOEsCnEfg+AXwXgTsJ4IcIfJEAPo/AmwngjQg8nwCeLQ3noVUBPciiYQzXAfQG42E4D9O4LYkm+xmYwH4BtFX5Sb8Kc2jmY9Kd80533QxfpOy/9AZB8YUChoGp0QAAAABJRU5ErkJggg=="> ${umidade}%</h1> |
+      <h1 class="wind"><img width="20px" src="/Content/Img/icons8-wind-48.png" alt="" />${vento}km/h</h1>
+    </div>
+  `;
+  return article;
+}
+
+// Função para buscar os dados da cidade
+async function buscarDadosCidade(cidadeValue) {
   try {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cidadeValue}&appid=${keyWeather}&lang=pt_br&units=metric`);
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cidadeValue}&appid=${keyWeather}&lang=pt_br&units=metric`);
 
     if (!response.ok) {
       throw new Error('Erro ao buscar dados da cidade');
@@ -66,13 +89,22 @@ async function BuscarCidade(cidadeValue) {
     mostrarNaTela(dadosAPI);
   } catch (error) {
     console.error('Ocorreu um erro:', error.message);
+    document.querySelector(".CidadeTempo").innerHTML = "Cidade não encontrada. Por favor, verifique o nome e tente novamente.";
+    document.querySelector(".cards-previsao-diaria").innerHTML = ""; // Limpa o conteúdo atual
   }
-
 }
 
-
-
-let procurarCidade = () => {
-  const cidade = document.getElementById("pesquisa").value;
-  BuscarCidade(cidade);
+const cidade = document.getElementById("pesquisa");
+// Função para iniciar a busca ao clicar no botão
+const procurarCidade = () => {
+  buscarDadosCidade(cidade.value);
 }
+
+//Evento de click na tecla enter
+cidade.addEventListener("keyup", (e) => {
+  e.preventDefault()
+  if (e.code == "Enter") {
+    const city = e.target.value
+    buscarDadosCidade(city)
+  }
+})

@@ -7,16 +7,33 @@
 body {
   height: 100vh;
   max-width: 100vw;
-  margin: 0 10px 0 10px;
-  background-color: #3566a7;
-  background: linear-gradient(to top, #266197, #3566a7);
+  background: linear-gradient(to bottom, #2c3744, #526f92);
   display: flex;
-  justify-content: center;
+
   align-items: center;
   flex-direction: column;
   gap: 20px;
   overflow-x: hidden;
   transition: all 2s ease-in-out;
+  background-repeat: no-repeat;
+}
+main {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  top: 0;
+  bottom: 0;
+
+  padding: 10px;
+}
+.TEXT {
+  margin-bottom: 10px;
+  color: #ffffff;
+  font-size: 38px;
+  letter-spacing: 3px;
 }
 .cabeçalho-pesquisar {
   width: 100%;
@@ -27,7 +44,6 @@ body {
   align-items: center;
   gap: 10px;
   color: #ffffff;
-  margin-left: 40px;
 }
 .cabeçalho-pesquisar input {
   width: 250px;
@@ -69,7 +85,7 @@ input::placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 30px;
   text-transform: capitalize;
   gap: 5px;
 }
@@ -79,27 +95,57 @@ input::placeholder {
 }
 .cards-previsao-diaria {
   display: grid;
-  grid-template-columns: repeat(1, 4fr);
+  grid-template-columns: repeat(5, 4fr);
   gap: 20px;
   margin-top: 20px;
 }
 .cards-previsao-diaria article {
   width: 100%;
-
   border-radius: 20px;
   color: #ffffff;
-  padding: 40px;
+  padding: 15px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.255);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 10px;
-  /*background: linear-gradient(to bottom, #132331, #3566a7);*/
+  margin-top: 10px;
+  transition: all 0.3s linear;
+}
+.cards-previsao-diaria article:hover {
+  transform: scale(1.05);
 }
 .temperaturaMax-Min {
   width: 100%;
   display: flex;
   justify-content: center;
   gap: 10px;
+}
+.Umidade {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.clima {
+  text-transform: capitalize;
+}
+.WindHumidity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+.wind {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.CidadeTempo {
+  font-size: 22px;
+  font-weight: 400;
 }
