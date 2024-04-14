@@ -1,0 +1,98 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+body {
+  height: 100vh;
+  max-width: 100vw;
+  margin: 0 10px 0 10px;
+  background-color: #3566a7;
+  background: linear-gradient(to top, #266197, #3566a7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  overflow-x: hidden;
+  transition: all 2s ease-in-out;
+}
+.cabeçalho-pesquisar {
+  width: 100%;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  margin-left: 40px;
+}
+.cabeçalho-pesquisar input {
+  width: 250px;
+  padding: 10px;
+  border-radius: 50px;
+  border: none;
+  outline: none;
+  background-color: #2c3744;
+  color: #ffffff;
+  padding-left: 20px;
+}
+input::placeholder {
+  text-align: center;
+  color: #ffffff;
+}
+
+.cabeçalho-pesquisar button {
+  width: 10px;
+  height: 10px;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 50px;
+  background-color: #2c3744;
+}
+.cabeçalho-pesquisar button > img {
+  color: white;
+}
+.cidade {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.cidade h2 {
+  text-align: center;
+  color: #ffffff;
+  margin-top: 20px;
+}
+.cards-previsao-diaria {
+  display: grid;
+  grid-template-columns: repeat(5, 4fr);
+  gap: 20px;
+
+  margin-top: 20px;
+}
+.cards-previsao-diaria article {
+  width: 100%;
+
+  border-radius: 20px;
+  color: #ffffff;
+  padding: 40px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  /*background: linear-gradient(to bottom, #132331, #3566a7);*/
+}
+.temperaturaMax-Min {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
