@@ -95,6 +95,17 @@ async function buscarDadosCidade(cidadeValue) {
     console.log(dadosAPI);
     mostrarNaTela(dadosAPI);
 
+    const divAlerts = document.getElementById("divAlerts")
+    divAlerts.style.display = "block"
+    // Verifica se há alertas meteorológicos na resposta
+    if (dadosAPI.hasOwnProperty("alerts")) {
+      const alerts = dadosAPI.alerts;
+      console.log("Alertas meteorológicos:", alerts);
+      exibirAlertas(alerts);
+    } else {
+      document.querySelector(".messageError").innerHTML = "Sem alertas de condições severas."
+    }
+
   } catch (error) {
     console.error('Ocorreu um erro:', error.message);
     document.querySelector(".CidadeTempo").innerHTML = `Cidade ${cidadeValue} não encontrada. Por favor, verifique o nome e tente novamente.`;
@@ -105,9 +116,39 @@ async function buscarDadosCidade(cidadeValue) {
   }
 }
 
+
+// Função para exibir os alertas meteorológicos
+function exibirAlertas(alerts) {
+  const listaAlertas = document.querySelector(".lista-alertas");
+
+  // Limpa o conteúdo atual da lista de alertas
+  listaAlertas.innerHTML = "";
+
+  // Itera sobre cada alerta na lista e cria um elemento HTML para exibi-lo
+  alerts.forEach(alerta => {
+    const itemAlerta = document.createElement("li");
+    itemAlerta.classList.add("alerta-item");
+
+    const tituloAlerta = document.createElement("h3");
+    tituloAlerta.textContent = alerta.event;
+
+    const descricaoAlerta = document.createElement("p");
+    descricaoAlerta.textContent = alerta.description;
+
+    const dataAlerta = document.createElement("p");
+    dataAlerta.textContent = `De ${new Date(alerta.start * 1000).toLocaleString()} até ${new Date(alerta.end * 1000).toLocaleString()}`;
+
+    itemAlerta.appendChild(tituloAlerta);
+    itemAlerta.appendChild(descricaoAlerta);
+    itemAlerta.appendChild(dataAlerta);
+
+    listaAlertas.appendChild(itemAlerta);
+  });
+}
+
+
 const cidade = document.getElementById("pesquisa");
 // Função para iniciar a busca ao clicar no botão
-
 const procurarCidade = () => {
   if (cidade.value == "") {
     document.querySelector(".CidadeTempo").innerHTML = `Procure por uma cidade, Por favor!!`;
@@ -179,9 +220,9 @@ const MudarThemeDeAcordoHorario = () => {
   console.log("Página carregada!");
   let tempo = new Date();
   if (tempo.getHours() < 18) {
-    body.style.background = "linear-gradient(to left bottom, #799bc5, #303d4d)";
+    body.style.background = "linear-gradient(to left bottom, #799bc5, #799bc5)";
   } else {
-    body.style.background = "linear-gradient(to left top, #2d3844, #303d4d)";
+    body.style.background = "linear-gradient(to left top, #303d4d, #303d4d)";
   }
 };
 

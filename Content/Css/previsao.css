@@ -1,16 +1,15 @@
+/* Estilos gerais */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
+
 body {
   height: 100vh;
-  max-width: 100vw;
-  background: linear-gradient(to left bottom, #799bc5, #303d4d);
-  /*  background: linear-gradient(to left bottom, #2c3744, #1f9739);*/
+  width: 100%;
   display: flex;
-
   align-items: center;
   flex-direction: column;
   gap: 20px;
@@ -18,8 +17,9 @@ body {
   transition: all 2s ease-in-out;
   background-repeat: no-repeat;
 }
+
 main {
-  position: absolute;
+  margin: auto 0;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -27,25 +27,26 @@ main {
   flex-direction: column;
   top: 0;
   bottom: 0;
-
   padding: 10px;
 }
+
 .TEXT {
   margin-bottom: 10px;
   color: #ffffff;
   font-size: 38px;
   letter-spacing: 3px;
 }
+
 .cabeçalho-pesquisar {
   width: 100%;
-  height: 20px;
   display: flex;
   justify-content: center;
   margin-top: 20px;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   color: #ffffff;
 }
+
 .cabeçalho-pesquisar input {
   width: 250px;
   padding: 10px;
@@ -56,31 +57,34 @@ main {
   color: #ffffff;
   padding-left: 20px;
 }
+
 input::placeholder {
   text-align: center;
   color: #ffffff;
 }
 
 .cabeçalho-pesquisar button {
-  width: 10px;
-  height: 10px;
+  width: 40px;
+  height: 40px;
   border: none;
   outline: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  border-radius: 50px;
+  border-radius: 50%;
   background-color: #2c3744;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
+
 .cabeçalho-pesquisar button:hover {
   background-color: #212830;
 }
+
 .cabeçalho-pesquisar button > img {
   color: white;
 }
+
 .cidade {
   width: 100%;
   display: flex;
@@ -90,21 +94,24 @@ input::placeholder {
   text-transform: capitalize;
   gap: 5px;
 }
+
 .cidade img {
   margin-top: 5px;
 }
+
 .cidade h2 {
   text-align: center;
   color: #ffffff;
 }
+
 .cards-previsao-diaria {
   display: grid;
-  grid-template-columns: repeat(5, 4fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   margin-top: 20px;
 }
+
 .cards-previsao-diaria article {
-  width: 100%;
   border-radius: 20px;
   color: #ffffff;
   padding: 15px;
@@ -117,24 +124,29 @@ input::placeholder {
   margin-top: 10px;
   transition: all 0.3s linear;
 }
+
 .cards-previsao-diaria article:hover {
   transform: scale(1.05);
 }
+
 .temperaturaMax-Min {
   width: 100%;
   display: flex;
   justify-content: center;
   gap: 10px;
 }
+
 .Umidade {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .clima {
   text-transform: capitalize;
 }
+
 .WindHumidity {
   display: flex;
   justify-content: center;
@@ -142,6 +154,7 @@ input::placeholder {
   gap: 10px;
   margin-top: 20px;
 }
+
 .wind {
   width: 100%;
   display: flex;
@@ -149,10 +162,12 @@ input::placeholder {
   align-items: center;
   gap: 10px;
 }
+
 .CidadeTempo {
   font-size: 20px;
   font-weight: 400;
 }
+
 /*Modal estilização*/
 .modal {
   display: none;
@@ -170,10 +185,8 @@ input::placeholder {
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
-
   width: 80%;
   max-width: 400px;
-  height: 200px;
   text-align: center;
   border-radius: 10px;
   display: flex;
@@ -206,6 +219,7 @@ input::placeholder {
   background-color: #2c3744;
   color: #fff;
 }
+
 #btnCopiarLink:hover {
   background-color: #3f5169;
   color: #fff;
@@ -217,6 +231,148 @@ input::placeholder {
   border: 1px solid #2c3744;
   padding: 2px;
 }
+
 #linkCompartilhavel:focus-visible {
   outline: none;
+}
+
+/* Alertas Estilização */
+
+.divAlerts {
+  margin: 30px;
+  text-align: center;
+  display: none;
+}
+.Alerta_Titulo {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 28px;
+}
+
+.lista-alertas {
+  list-style: none;
+  padding: 0;
+}
+.lista-alertas li {
+  color: #fff;
+  margin-top: 15px;
+}
+
+.alerta-item {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.alerta-item h3 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  color: #f00;
+}
+
+.alerta-item p {
+  margin: 0;
+}
+.messageError {
+  font-size: 15px;
+  font-weight: 400;
+  color: #fefefe;
+}
+
+/* Mídia para dispositivos menores */
+@media screen and (max-width: 1128px) {
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .cards-previsao-diaria {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .cards-previsao-diaria article:hover {
+    transform: none;
+  }
+  .TEXT {
+    font-size: 28px;
+  }
+  .cards-previsao-diaria article {
+    padding: 10px;
+  }
+  #linkCompartilhavel {
+    width: 100%;
+  }
+
+  .cabeçalho-pesquisar input {
+    width: 200px;
+  }
+  .Alerta_Titulo {
+    font-size: 25px;
+  }
+}
+
+/* Mídia para dispositivos menores */
+@media screen and (max-width: 768px) {
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .cards-previsao-diaria {
+    margin-top: 20px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cards-previsao-diaria article:hover {
+    transform: none;
+  }
+  .TEXT {
+    font-size: 28px;
+  }
+  .cards-previsao-diaria article {
+    padding: 10px;
+  }
+  #linkCompartilhavel {
+    width: 100%;
+  }
+
+  .cabeçalho-pesquisar input {
+    width: 200px;
+  }
+  .Alerta_Titulo {
+    font-size: 25px;
+  }
+}
+@media screen and (max-width: 550px) {
+  main {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .cards-previsao-diaria {
+    margin-top: 20px;
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .cards-previsao-diaria article:hover {
+    transform: none;
+  }
+  .TEXT {
+    font-size: 28px;
+  }
+  .cards-previsao-diaria article {
+    padding: 10px;
+  }
+  #linkCompartilhavel {
+    width: 100%;
+  }
+
+  .cabeçalho-pesquisar input {
+    width: 200px;
+  }
+  .Alerta_Titulo {
+    font-size: 25px;
+  }
 }
