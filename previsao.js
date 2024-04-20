@@ -2,16 +2,23 @@ const keyWeather = "5f03e26a0f8995b6d82a843283cdd101";
 
 // Função para exibir os dados na tela
 const mostrarNaTela = (dados) => {
+  const cidadeTempoElemento = document.querySelector(".CidadeTempo");
+  const cardsPrevisaoElemento = document.querySelector(".cards-previsao-diaria");
+
   if (dados.cod === "404") {
-    document.querySelector(".CidadeTempo").innerHTML = "Cidade não encontrada. Por favor, verifique o nome e tente novamente.";
-    document.querySelector(".cards-previsao-diaria").innerHTML = ""; // Limpa o conteúdo atual
+    cidadeTempoElemento.innerHTML = "Cidade não encontrada. Por favor, verifique o nome e tente novamente.";
+    cardsPrevisaoElemento.innerHTML = ""; // Limpa o conteúdo atual
     return;
   }
 
-  if (dados.city.name.charAt(dados.city.name.length - 1) === 'o')
-    document.querySelector(".CidadeTempo").innerHTML = "Tempo no " + dados.city.name;
-  else
-    document.querySelector(".CidadeTempo").innerHTML = "Tempo em " + dados.city.name;
+  const nomeCidade = dados.city.name;
+  const nomeCidadeFormatado = nomeCidade;
+
+  cidadeTempoElemento.innerHTML = nomeCidadeFormatado;
+  document.getElementById("country").src = `https://flagsapi.com/${dados.city.country}/flat/64.png`;
+
+  if (!dados.list) return; // Verifica se há dados de previsão disponíveis
+
   exibirPrevisaoSemana(dados);
 }
 
@@ -87,17 +94,31 @@ async function buscarDadosCidade(cidadeValue) {
     const dadosAPI = await response.json();
     console.log(dadosAPI);
     mostrarNaTela(dadosAPI);
+
   } catch (error) {
     console.error('Ocorreu um erro:', error.message);
-    document.querySelector(".CidadeTempo").innerHTML = "Cidade não encontrada. Por favor, verifique o nome e tente novamente.";
+    document.querySelector(".CidadeTempo").innerHTML = `Cidade ${cidadeValue} não encontrada. Por favor, verifique o nome e tente novamente.`;
+    setTimeout(() => {
+      document.querySelector(".CidadeTempo").innerHTML = ""
+    }, 4000)
     document.querySelector(".cards-previsao-diaria").innerHTML = ""; // Limpa o conteúdo atual
   }
 }
 
 const cidade = document.getElementById("pesquisa");
 // Função para iniciar a busca ao clicar no botão
+
 const procurarCidade = () => {
-  buscarDadosCidade(cidade.value);
+  if (cidade.value == "") {
+    document.querySelector(".CidadeTempo").innerHTML = `Procure por uma cidade, Por favor!!`;
+    setTimeout(() => {
+      document.querySelector(".CidadeTempo").innerHTML = ""
+    }, 2000)
+
+  } else {
+    buscarDadosCidade(cidade.value);
+  }
+
 }
 
 //Evento de click na tecla enter
@@ -108,3 +129,61 @@ cidade.addEventListener("keyup", (e) => {
     buscarDadosCidade(city)
   }
 })
+
+// Modal
+const abrirModal = () => {
+  const modal = document.getElementById("modalCompartilhar");
+  modal.style.display = "block";
+};
+
+const fecharModal = () => {
+  const modal = document.getElementById("modalCompartilhar");
+  modal.style.display = "none";
+};
+
+const copiarLink = () => {
+  const linkCompartilhavel = document.getElementById("linkCompartilhavel").value;
+
+  navigator.clipboard.writeText(linkCompartilhavel)
+    .then(() => {
+      alert("Link copiado para a área de transferência!");
+    })
+    .catch((error) => {
+      console.error("Erro ao copiar o link:", error);
+    });
+};
+
+const criarLinkCompartilhavel = () => {
+  const urlAtual = window.location.href;
+  const cidadeAtual = document.querySelector(".CidadeTempo").textContent;
+
+  return `${urlAtual}?cidade=${cidadeAtual}`;
+};
+
+const btnCompartilhar = document.getElementById("btnCompartilhar");
+btnCompartilhar.addEventListener("click", () => {
+  const linkCompartilhavel = criarLinkCompartilhavel();
+  const linkCompartilhavelInput = document.getElementById("linkCompartilhavel");
+  linkCompartilhavelInput.value = linkCompartilhavel;
+  abrirModal();
+});
+
+const closeModal = document.getElementById("closeModal");
+closeModal.addEventListener("click", fecharModal);
+
+const btnCopiarLink = document.getElementById("btnCopiarLink");
+btnCopiarLink.addEventListener("click", copiarLink);
+
+const MudarThemeDeAcordoHorario = () => {
+  let body = document.getElementById("Body");
+  console.log("Página carregada!");
+  let tempo = new Date();
+  if (tempo.getHours() < 18) {
+    body.style.background = "linear-gradient(to left bottom, #799bc5, #303d4d)";
+  } else {
+    body.style.background = "linear-gradient(to left top, #2d3844, #303d4d)";
+  }
+};
+
+// Adicione um ouvinte de evento para acionar a função quando a página for carregada
+window.addEventListener('load', MudarThemeDeAcordoHorario);
