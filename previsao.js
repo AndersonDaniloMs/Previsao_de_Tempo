@@ -33,7 +33,7 @@ const exibirPrevisaoSemana = (dados) => {
   const diaMesAtual = hoje.getDate(); // Dia do mês
 
   // Exibir previsão para os próximos 5 dias
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i <= 5; i++) {
     const dataPrevisao = new Date(hoje);
     dataPrevisao.setDate(hoje.getDate() + i);
     const diaSemana = diasSemana[dataPrevisao.getDay()];
@@ -84,10 +84,8 @@ const criarCardPrevisao = (diaSemana, diaMes, clima, tempMedia, tempMax, tempMin
 
 async function buscarDadosCidade(cidadeValue) {
   try {
-    // Check if the city exists
-    if (!(await verificarCidadeExistente(cidadeValue))) {
-      throw new Error('Cidade não encontrada');
-    }
+    // Verifica se a cidade existe
+    await verificarCidadeExistente(cidadeValue);
 
     const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cidadeValue}&appid=${keyWeather}&lang=pt_br&units=metric`);
 
@@ -111,19 +109,34 @@ async function buscarDadosCidade(cidadeValue) {
     }
 
   } catch (error) {
-    console.error('Ocorreu um erro:', error.message);
-    document.querySelector(".CidadeTempo").innerHTML = `Cidade ${cidadeValue} não encontrada. Por favor, verifique o nome e tente novamente.`;
-    setTimeout(() => {
-      document.querySelector(".CidadeTempo").innerHTML = ""
-    }, 4000)
+    console.error(`Ocorreu um erro: ${error.message}`);
+
+    if (error.code === 404) {
+      document.querySelector(".CidadeTempo").innerHTML = `Cidade ${cidadeValue} não encontrada. Por favor, verifique o nome e tente novamente.`;
+      setTimeout(() => {
+        document.querySelector(".CidadeTempo").innerHTML = ""
+      }, 4000)
+
+    } else {
+      document.querySelector(".CidadeTempo").innerHTML = `Erro ao buscar dados da cidade: ${error.message}`;
+    }
+
     document.querySelector(".cards-previsao-diaria").innerHTML = ""; // Limpa o conteúdo atual
   }
 }
 
-// Function to check if the city exists
+
+// Função para verificar se a cidade existe
 const verificarCidadeExistente = async (cidade) => {
   const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${keyWeather}&lang=pt_br`);
-  return response.ok;
+  if (response.ok) {
+    return true;
+  } else {
+    const error = new Error(`Cidade não encontrada: ${cidade}`);
+    error.code = response.status;
+    error.message = await response.json();
+    throw error;
+  }
 };
 
 
