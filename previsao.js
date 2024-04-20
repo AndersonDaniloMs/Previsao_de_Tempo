@@ -82,9 +82,13 @@ const criarCardPrevisao = (diaSemana, diaMes, clima, tempMedia, tempMax, tempMin
   return article;
 }
 
-// Função para buscar os dados da cidade
 async function buscarDadosCidade(cidadeValue) {
   try {
+    // Check if the city exists
+    if (!(await verificarCidadeExistente(cidadeValue))) {
+      throw new Error('Cidade não encontrada');
+    }
+
     const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cidadeValue}&appid=${keyWeather}&lang=pt_br&units=metric`);
 
     if (!response.ok) {
@@ -115,6 +119,12 @@ async function buscarDadosCidade(cidadeValue) {
     document.querySelector(".cards-previsao-diaria").innerHTML = ""; // Limpa o conteúdo atual
   }
 }
+
+// Function to check if the city exists
+const verificarCidadeExistente = async (cidade) => {
+  const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${keyWeather}&lang=pt_br`);
+  return response.ok;
+};
 
 
 // Função para exibir os alertas meteorológicos
