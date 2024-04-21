@@ -1,5 +1,6 @@
 const keyWeather = "5f03e26a0f8995b6d82a843283cdd101";
-
+const messagecopysucess = document.getElementById("flexVerify")
+messagecopysucess.style.display = "none"
 // Função para exibir os dados na tela
 const mostrarNaTela = (dados) => {
   const cidadeTempoElemento = document.querySelector(".CidadeTempo");
@@ -33,7 +34,7 @@ const exibirPrevisaoSemana = (dados) => {
   const diaMesAtual = hoje.getDate(); // Dia do mês
 
   // Exibir previsão para os próximos 5 dias
-  for (let i = 0; i <= 5; i++) {
+  for (let i = 0; i < 5; i++) {
     const dataPrevisao = new Date(hoje);
     dataPrevisao.setDate(hoje.getDate() + i);
     const diaSemana = diasSemana[dataPrevisao.getDay()];
@@ -210,7 +211,11 @@ const copiarLink = () => {
 
   navigator.clipboard.writeText(linkCompartilhavel)
     .then(() => {
-      alert("Link copiado para a área de transferência!");
+      messagecopysucess.style.display = "flex"
+      setTimeout(() => {
+        messagecopysucess.style.display = "none"
+      }, 2000)
+      //alert("Link copiado para a área de transferência!");
     })
     .catch((error) => {
       console.error("Erro ao copiar o link:", error);
@@ -243,7 +248,7 @@ const MudarThemeDeAcordoHorario = () => {
   console.log("Página carregada!");
   let tempo = new Date();
   if (tempo.getHours() < 18) {
-    body.style.background = "linear-gradient(to left bottom, #799bc5, #799bc5)";
+    body.style.background = "linear-gradient(to left, #303d4d, #799bc5)";
   } else {
     body.style.background = "linear-gradient(to left top, #303d4d, #303d4d)";
   }
