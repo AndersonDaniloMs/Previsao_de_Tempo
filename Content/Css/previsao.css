@@ -47,6 +47,9 @@ main {
   color: #ffffff;
 }
 
+#country {
+  display: none;
+}
 .cabeçalho-pesquisar input {
   width: 250px;
   padding: 10px;

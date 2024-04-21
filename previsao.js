@@ -16,6 +16,7 @@ const mostrarNaTela = (dados) => {
   const nomeCidadeFormatado = nomeCidade;
 
   cidadeTempoElemento.innerHTML = nomeCidadeFormatado;
+  document.getElementById("country").style.display = "block"
   document.getElementById("country").src = `https://flagsapi.com/${dados.city.country}/flat/64.png`;
 
   if (!dados.list) return; // Verifica se há dados de previsão disponíveis
