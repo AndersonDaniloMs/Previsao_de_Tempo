@@ -1,37 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Content/Css/previsao.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/Content/Css/previsao.css" />
 
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet"
-    >
+    />
     <link
       rel="shortcut icon"
       href="/Content/Img/2794213-isolado-objeto-clima-icone-nuvem-e-lua-vetor-removebg-preview.png"
       type="image/x-icon"
-    >
+    />
     <title>Previsão de Tempo</title>
   </head>
   <body id="Body" onload="MudarThemeDeAcordoHorario()">
     <main>
       <h1 class="TEXT">PREVISÃO DE TEMPO</h1>
       <header class="cabeçalho-pesquisar">
-        <button
-          id="procurar"
-          onclick="procurarCidade()"
-          title="procurar"
-          
-        >
+        <button id="procurar" onclick="procurarCidade()" title="procurar">
           <img
             class="imagemClima"
             width="15"
             alt=""
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABcklEQVR4nO2WwUpCQRiFL5lusnYJvYL1Dtm6FhnlK4hhaT1F+BpmPUoQbbIgJW3fWhe1+uK3c2FWysxcJMgDAxfunP8bZv575ibJSn9FQAGoAXfAAJhq2HNP7wpZQ0+AMYs1AqpZANeAjlP4GbgEysCGxi7QAvrOvBvzxoA7KvQF1OcV0yIbmjuDx2wvKrTv4as48OOQRhrLXA9Y9Lm870Dex1hzztT7rIAc8KIapz7Ge5kufKFOjbZq3PqYhjKVI8DW7aaBj2kiUzECvKkak2WDt0LAwwy2ei/tbB9TT6ZWBPhaNbohn1M/4nN6VY0z3wAZydgIADfltRBa9zVXZbb4q3j4DoBveY98Fz2TbpkUbjGYS+Zvb9OBfgKlJET83jgpHMVgW+FQ1LDuvXLONIWm88PgJrtlFPiL9AEcGszJ6mh43gLfshd4U8hMtaCuda/bSJnCfQVsO38mttid5L/AS862Py4N7MCfgIelgldKpB/hgvXNldcwtQAAAABJRU5ErkJggg=="
-          >
+          />
         </button>
 
         <input
@@ -39,7 +34,7 @@
           name="pesquisa"
           id="pesquisa"
           placeholder="Pesquisar sua cidade"
-        >
+        />
 
         <button id="btnCompartilhar" title="partilhar">
           <img
@@ -47,12 +42,12 @@
             width="15"
             src="/Content/Img/icons8-share-24.png"
             alt="Icone de partilhar previsão"
-          >
+          />
         </button>
       </header>
       <section class="cidade">
-        <h2 class="CidadeTempo"> </h2>
-        <img id="country" height="25" src="sdd" alt="zxxs">
+        <h2 class="CidadeTempo"></h2>
+        <img id="country" height="25" src="sdd" alt="zxxs" />
       </section>
 
       <!--section dos Cards-->
@@ -65,14 +60,14 @@
             <img
               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABi0lEQVR4nO3WTU7CUBAAYDaewp1b3WmiJi6UmRqVlfEOLjDpm55AiacRboByAy/QmUpU2KgLWbgkwUyRIErb90oRF0wyIYRXPub9zKNUWsZ/DQqxYhhahrGnSQx3foQn80UFr0lwMD2hVhhkBHaNYMMwPBvBbjI6TB2jY0mgHjDu5KzOuyCGfhaWmAz9gKHqXCnNgk7gDpUbwcbM6Hjt6/ZwvE7FwIbx0aXibj4EXvzocNN/wL3vG84KTT8yWai3EX9HhFtOR41CrMyK6qu+/zUmKh+nrW1rHujXlN+mwNib9pDPcBZE3qkR+PiJkhysZ6HDo4XvzjCFsBZ/LrA/wp1QyYC14U9/CDgIy6sjnATaTqjE2UyE9ZZJ/sVj/Px+c8URHQQCR4lwXLVAzQZXlARerTYh42UqatdAoG0Erozgm9Wut20gC22ZJFAvDoYba1ivsqKuRRN629bwEIfqn/8RmKhcp53xiQQ7FmBHx+r0Olea/6hZHpm8obeMNnxtgXEKNjObwzJKC4xPrE8hYlL7G20AAAAASUVORK5CYII="
               alt=""
-            >
+            />
             <p class="messageGreen">
               Link copiado para a área de transferência!
             </p>
           </div>
           <span id="closeModal" class="close">&times;</span>
           <p>Link compartilhável gerado:</p>
-          <input id="linkCompartilhavel" type="text" readonly>
+          <input id="linkCompartilhavel" type="text" readonly />
           <button id="btnCopiarLink">Copiar Link</button>
         </div>
       </div>
