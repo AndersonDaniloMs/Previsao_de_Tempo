@@ -1,67 +1,7 @@
 const keyWeather = "5f03e26a0f8995b6d82a843283cdd101";
 const messagecopysucess = document.getElementById("flexVerify")
 messagecopysucess.style.display = "none"
-// Função para exibir os dados na tela
-const mostrarNaTela = (dados) => {
-  const cidadeTempoElemento = document.querySelector(".CidadeTempo");
-  const cardsPrevisaoElemento = document.querySelector(".cards-previsao-diaria");
-
-  if (dados.cod === "404") {
-    cidadeTempoElemento.innerHTML = "Cidade não encontrada. Por favor, verifique o nome e tente novamente.";
-    cardsPrevisaoElemento.innerHTML = ""; // Limpa o conteúdo atual
-    return;
-  }
-
-  const nomeCidade = dados.city.name;
-  const nomeCidadeFormatado = nomeCidade;
-
-  cidadeTempoElemento.innerHTML = nomeCidadeFormatado;
-  document.getElementById("country").style.display = "block"
-  document.getElementById("country").src = `https://flagsapi.com/${dados.city.country}/flat/64.png`;
-
-  if (!dados.list) return; // Verifica se há dados de previsão disponíveis
-
-  exibirPrevisaoSemana(dados);
-}
-
-// Função para exibir a previsão do tempo para os próximos 5 dias
-const exibirPrevisaoSemana = (dados) => {
-  const diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
-  const cardsPrevisao = document.querySelector(".cards-previsao-diaria");
-  cardsPrevisao.innerHTML = ""; // Limpa o conteúdo atual
-
-  const hoje = new Date();
-  let diaAtual = hoje.getDay(); // Dia da semana (0-6)
-  const diaMesAtual = hoje.getDate(); // Dia do mês
-
-  // Exibir previsão para os próximos 5 dias
-  for (let i = 0; i < 5; i++) {
-    const dataPrevisao = new Date(hoje);
-    dataPrevisao.setDate(hoje.getDate() + i);
-    const diaSemana = diasSemana[dataPrevisao.getDay()];
-    const diaMes = `${dataPrevisao.getDate()}/${dataPrevisao.getMonth() < 9 ? "0" : ""}${dataPrevisao.getMonth() + 1}`;
-
-    // Encontrar a previsão para o dia atual na lista de previsões da API
-    const previsaoDia = dados.list.find((item) => {
-      const dataItem = new Date(item.dt_txt);
-      return dataItem.getDate() === dataPrevisao.getDate() && dataItem.getMonth() === dataPrevisao.getMonth();
-    });
-
-    if (previsaoDia) {
-      const clima = previsaoDia.weather[0].description;
-      const tempMedia = Math.floor(previsaoDia.main.temp);
-      const tempMax = Math.floor(previsaoDia.main.temp_max);
-      const tempMin = Math.floor(previsaoDia.main.temp_min);
-      const umidade = previsaoDia.main.humidity;
-      const vento = previsaoDia.wind.speed
-
-      const article = criarCardPrevisao(diaSemana, diaMes, clima, tempMedia, tempMax, tempMin, umidade, previsaoDia.weather[0].icon, vento);
-      cardsPrevisao.appendChild(article);
-    }
-
-    diaAtual = (diaAtual + 1) % 7; // Avança para o próximo dia da semana
-  }
-}
+const cidade = document.getElementById("pesquisa");
 
 // Função para criar um card de previsão do tempo
 const criarCardPrevisao = (diaSemana, diaMes, clima, tempMedia, tempMax, tempMin, umidade, icone, vento) => {
@@ -141,6 +81,83 @@ const verificarCidadeExistente = async (cidade) => {
   }
 };
 
+// Função para exibir os dados na tela
+const mostrarNaTela = (dados) => {
+  const cidadeTempoElemento = document.querySelector(".CidadeTempo");
+  const cardsPrevisaoElemento = document.querySelector(".cards-previsao-diaria");
+
+  if (dados.cod === "404") {
+    cidadeTempoElemento.innerHTML = "Cidade não encontrada. Por favor, verifique o nome e tente novamente.";
+    cardsPrevisaoElemento.innerHTML = ""; // Limpa o conteúdo atual
+    return;
+  }
+
+  const nomeCidade = dados.city.name;
+  const nomeCidadeFormatado = nomeCidade;
+
+  cidadeTempoElemento.innerHTML = nomeCidadeFormatado;
+  document.getElementById("country").style.display = "block"
+  document.getElementById("country").src = `https://flagsapi.com/${dados.city.country}/flat/64.png`;
+
+  if (!dados.list) return; // Verifica se há dados de previsão disponíveis
+
+  exibirPrevisaoSemana(dados);
+}
+
+// Função para exibir a previsão do tempo para os próximos 5 dias
+const exibirPrevisaoSemana = (dados) => {
+  const diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
+  const cardsPrevisao = document.querySelector(".cards-previsao-diaria");
+  cardsPrevisao.innerHTML = ""; // Limpa o conteúdo atual
+
+  const hoje = new Date();
+  let diaAtual = hoje.getDay(); // Dia da semana (0-6)
+  const diaMesAtual = hoje.getDate(); // Dia do mês
+
+  // Exibir previsão para os próximos 5 dias
+  for (let i = 0; i < 5; i++) {
+    const dataPrevisao = new Date(hoje);
+    dataPrevisao.setDate(hoje.getDate() + i);
+    const diaSemana = diasSemana[dataPrevisao.getDay()];
+    const diaMes = `${dataPrevisao.getDate()}/${dataPrevisao.getMonth() < 9 ? "0" : ""}${dataPrevisao.getMonth() + 1}`;
+
+    // Encontrar a previsão para o dia atual na lista de previsões da API
+    const previsaoDia = dados.list.find((item) => {
+      const dataItem = new Date(item.dt_txt);
+      return dataItem.getDate() === dataPrevisao.getDate() && dataItem.getMonth() === dataPrevisao.getMonth();
+    });
+
+    if (previsaoDia) {
+      const clima = previsaoDia.weather[0].description;
+      const tempMedia = Math.floor(previsaoDia.main.temp);
+      const tempMax = Math.floor(previsaoDia.main.temp_max);
+      const tempMin = Math.floor(previsaoDia.main.temp_min);
+      const umidade = previsaoDia.main.humidity;
+      const vento = previsaoDia.wind.speed
+
+      const article = criarCardPrevisao(diaSemana, diaMes, clima, tempMedia, tempMax, tempMin, umidade, previsaoDia.weather[0].icon, vento);
+      cardsPrevisao.appendChild(article);
+    }
+
+    diaAtual = (diaAtual + 1) % 7; // Avança para o próximo dia da semana
+  }
+}
+
+
+
+// Função para iniciar a busca ao clicar no botão
+const procurarCidade = () => {
+  if (cidade.value == "") {
+    document.querySelector(".CidadeTempo").innerHTML = `Procure por uma cidade, Por favor!!`;
+    setTimeout(() => {
+      document.querySelector(".CidadeTempo").innerHTML = ""
+    }, 2000)
+
+  } else {
+    buscarDadosCidade(cidade.value);
+  }
+
+}
 
 // Função para exibir os alertas meteorológicos
 function exibirAlertas(alerts) {
@@ -169,22 +186,6 @@ function exibirAlertas(alerts) {
 
     listaAlertas.appendChild(itemAlerta);
   });
-}
-
-
-const cidade = document.getElementById("pesquisa");
-// Função para iniciar a busca ao clicar no botão
-const procurarCidade = () => {
-  if (cidade.value == "") {
-    document.querySelector(".CidadeTempo").innerHTML = `Procure por uma cidade, Por favor!!`;
-    setTimeout(() => {
-      document.querySelector(".CidadeTempo").innerHTML = ""
-    }, 2000)
-
-  } else {
-    buscarDadosCidade(cidade.value);
-  }
-
 }
 
 //Evento de click na tecla enter
@@ -257,3 +258,4 @@ const MudarThemeDeAcordoHorario = () => {
 
 // Adicione um ouvinte de evento para acionar a função quando a página for carregada
 window.addEventListener('load', MudarThemeDeAcordoHorario);
+
